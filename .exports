@@ -1,0 +1,20 @@
+#!/bin/bash
+
+export HISTSIZE=100000
+export HISTFILESIZE=200000
+export HISTCONTROL=ignoreboth
+
+### Tree ignore list
+export TREE_IGNORE=".git|node_modules|.next"
+
+### Android sdk
+export ANDROID_HOME="/home/pedro/android-sdk"
+
+## Pipenv
+export WORKON_HOME="$HOME/python-envs"
+
+export PIPENV_DEFAULT_PYTHON_VERSION="3.6"
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+### nvm dir
+export NVM_DIR="${HOME}/.nvm"
