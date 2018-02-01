@@ -86,11 +86,3 @@ if ! shopt -oq posix; then
         . /etc/bash_completion
     fi
 fi
-
-for file in ~/.{exports,functions,bash_prompt,aliases,dockerfunc,extra}; do
-	  if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-		    # shellcheck source=/dev/null
-		    source "$file"
-	  fi
-done
-unset file

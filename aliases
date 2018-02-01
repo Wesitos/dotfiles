@@ -7,6 +7,9 @@ else # OS X `ls`
 	colorflag="-G"
 fi
 
+# Expand aliases always (instead of only in interactive shells)
+shopt -s expand_aliases
+
 # List all files colorized in long format
 # shellcheck disable=SC2139
 alias l="ls -lF ${colorflag}"
@@ -65,6 +68,6 @@ alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v exten
 alias pubkey="more ~/.ssh/wesitos.pub | xclip -selection clipboard | echo '=> Public key copied to pasteboard.'"
 
 
-# Touchpad controls (the '12' is for my notebook)
-alias touchpad-off='xinput set-prop 12 "Device Enabled" 0'
-alias touchpad-on='xinput set-prop 12 "Device Enabled" 1'
+alias touchpadId="xinput | grep TouchPad | sed -r 's/.*id=([0-9]*).*/\1/g'"
+alias touchpad-off='xinput set-prop $(touchpadId) "Device Enabled" 0'
+alias touchpad-on='xinput set-prop $(touchpadId) "Device Enabled" 1'

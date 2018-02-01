@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell
+
+
+for file in ~/dotfiles/{default,exports,functions,prompt,aliases,dockerfunc,extra}; do
+	  if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+		    # shellcheck source=/dev/null
+		    source "$file"
+	  fi
+done
+unset file
+
+# Load nvm without calling "nvm use"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    source "$NVM_DIR/nvm.sh" --no-use
+fi
