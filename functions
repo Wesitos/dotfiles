@@ -2,7 +2,7 @@
 
 ### Pretty path
 function path(){
-    tr ':' '\n' <<< "$PATH"
+    tr ':' '\n' <<< "$PATH" | sed -e 's|'$HOME'|'$orange'~'$reset'|'
 }
 
 # Simple calculator
@@ -105,7 +105,7 @@ getcertnames() {
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 tre() {
-    tree -aC -I "$TREE_IGNORE" --dirsfirst "$@" | less -FRNX
+    tree -aC -I "$TREE_IGNORE" --dirsfirst "$@" | less -FRX
 }
 
 # Runs "eval $(docker-machine env $1)" in a subshell

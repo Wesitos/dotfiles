@@ -9,17 +9,24 @@ function add_path_exists() {
     done
 }
 
-# set PATH so it includes user's private bin if it exists
-add_path_exists "$HOME/.local/bin" "$HOME/bin"
-
 # Cabal
 add_path_exists "$HOME/.cabal/bin"
 
+## Android sdk
+add_path_exists "$HOME/android-sdk/platform-tools" \
+                "$HOME/android-sdk/tools"
+
+# Add python user-site binary location
+if command -v python >/dev/null 2>&1; then
+    add_path_exists $(python -m site --user-base)/bin
+fi
+
+# set PATH so it includes user's private bin if it exists
+add_path_exists "$HOME/bin"
+
+
 # Yarn
 add_path_exists "$HOME/.yarn/bin"
-
-## Android sdk
-add_path_exists "$HOME/android-sdk/platform-tools" "$HOME/android-sdk/tools"
 
 ### Yarn
 add_path_exists "$HOME/.yarn/bin"
