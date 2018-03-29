@@ -1,0 +1,10 @@
+#+TITLE: Dotfiles
+
+Based in [[https://github.com/josephwecker/bashrc_dispatch][bashrc_dispatch]] and [[https://github.com/jessfraz/dotfiles/][jessfraz dotfiles]]
+
+* To install
+  Clone repo to ~${HOME}/dotfiles/~ and create links from the 
+  following paths to ~~/dotfiles/dispatch~
+  + ~~/.bash_login~
+  + ~~/.bash_profile~
+  + ~~/bashrc~
