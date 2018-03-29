@@ -8,13 +8,18 @@ export HISTCONTROL=ignoreboth
 export TREE_IGNORE=".git|node_modules|.next|.#*"
 
 ### Android sdk
-export ANDROID_HOME="/home/pedro/android-sdk"
+export ANDROID_HOME="${HOME}/lib/android-sdk"
 
 ## Pipenv
-export WORKON_HOME="$HOME/python-envs"
+export WORKON_HOME="${HOME}/python-envs"
+
+## Pyenv
+export PYENV_ROOT="${HOME}/.pyenv"
 
 export PIPENV_DEFAULT_PYTHON_VERSION="3.6"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 ### nvm dir
 export NVM_DIR="${HOME}/.nvm"
+
+export EDITOR="emacsclient -c"

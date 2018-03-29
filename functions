@@ -112,3 +112,17 @@ tre() {
 dockerenv() {
     bash --init-file <(echo " . \"$HOME/.bashrc\"; eval $(docker-machine env ${1})")
 }
+
+dockerssh() {
+    if [[ -v DOCKER_MACHINE_NAME ]]; then
+        docker-machine ssh $DOCKER_MACHINE_NAME
+    else
+        echo "DOCKER_MACHINE_NAME is not set"
+    fi;
+}
+
+
+# Get network interface ip
+getip () {
+    /sbin/ip -o -4 addr list "$1" | awk '{print $4}' | cut -d/ -f1
+}
