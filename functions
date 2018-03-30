@@ -110,7 +110,7 @@ tre() {
 
 # Runs "eval $(docker-machine env $1)" in a subshell
 dockerenv() {
-    bash --init-file <(echo " . \"$HOME/.bashrc\"; eval $(docker-machine env ${1})")
+    bash --init-file <(echo ". \"$HOME/.bashrc\"; eval docker-machine env ${1} || exit")
 }
 
 dockerssh() {
