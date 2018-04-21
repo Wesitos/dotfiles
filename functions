@@ -35,6 +35,7 @@ mkd() {
 # Start an HTTP server from a directory, optionally specifying the port
 server() {
     local port="${1:-8000}"
+    echo "Running HTTP server on port $port"
     busybox httpd -f -p "$port"
 }
 
