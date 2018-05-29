@@ -1,0 +1,7 @@
+---
+
+- name: Install texlive
+  apt:
+    name: texlive-full
+    state: latest
+  become_user: root

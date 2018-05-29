@@ -1,0 +1,18 @@
+---
+packages:
+  - apt-transport-https
+  - build-essential
+  - git
+  - synaptic
+  - wget
+  - curl
+  - snapd
+  - graphviz
+  - htop
+  - tree
+  - lm-sensors
+  - chromium
+  - wireshark
+  # dotfiles dependencies
+  - xinput
+  - ufw

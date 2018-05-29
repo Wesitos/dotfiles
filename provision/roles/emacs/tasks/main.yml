@@ -1,0 +1,41 @@
+---
+- name: Check emacs is present
+  shell: command -v emacs >/dev/null 2>&1
+  register: check_emacs
+  ignore_errors: yes
+
+- when: check_emacs.rc
+  block:
+    - name: Install build dependencies
+      apt:
+        name: emacs25
+        state: build-dep
+      become_user: root
+      when:
+
+    - name: Install gnutls-dev
+      apt:
+        name: gnutls-dev
+        state: latest
+      become_user: root
+
+    - name: Download emacs source
+      unarchive:
+        src: http://ftp.gnu.org/gnu/emacs/emacs-{{ emacs_version }}.tar.gz
+        dest: "{{ emacs_source_path }}"
+        remote_src: yes
+
+    - name: Configure emacs source
+      command:
+        chdir: "{{ emacs_source_path }}"
+        command: "{{ emacs_source_path }}/configure"
+
+    - name: Build sources
+      make:
+        chdir: "{{ emacs_source_path }}"
+
+    - name: Install binaries
+      make:
+        chdir: "{{ emacs_source_path }}"
+        target: install
+      become_user: root

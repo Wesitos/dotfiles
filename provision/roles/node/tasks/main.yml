@@ -1,0 +1,40 @@
+---
+- name: Add yarn repo public key
+  apt_key:
+    id: 1646B01B86E50310 # this could change in the future
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+  become_user: root
+
+- name: Add yarn repo
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+    filename: yarn
+  become_user: root
+
+- name: Install yarn
+  apt:
+    name: yarn
+    install_recommends: no
+    update_cache: true
+    state: latest
+  become_user: root
+
+- name: Install nvm
+  git:
+    repo: https://github.com/creationix/nvm.git
+    dest: "{{ nvm_root }}"
+    update: no
+
+- name: Install node
+  shell: "NVM_DIR={{ nvm_root }} . {{nvm_exec}} && nvm install {{node_version}} && nvm alias default {{node_version}}"
+
+- name: Install global packages
+  shell: "NVM_DIR={{ nvm_root }} . {{nvm_exec}} && yarn global add {{item}}"
+  with_items:
+    - tern
+    # This corresponds to lerna version 3 (currently in beta)
+    - lerna@next
+    - nodemon
+    - svgo

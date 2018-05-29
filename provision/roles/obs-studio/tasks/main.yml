@@ -1,0 +1,4 @@
+---
+- name: Install from snap
+  command: snap install obs-studio
+  become_user: root

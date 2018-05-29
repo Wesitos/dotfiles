@@ -1,0 +1,41 @@
+---
+- name: Install python dependencies
+  apt:
+    name: "{{ python_build_dependencies }}"
+    state: latest
+  become_user: root
+
+- name: Install pyenv
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: "{{ pyenv_root }}"
+    update: yes
+
+- name: Get list of Pythons installed in pyenv
+  shell: "{{ pyenv_exec }} versions | sed 's/^..//' | awk '{ print $1 }'"
+  register: pyenv_versions
+  changed_when: false
+
+- name: Install Pythons using pyenv
+  command: "{{ pyenv_exec }} install {{ python_3_version }}"
+  when: item not in pyenv_versions.stdout_lines
+  with_items:
+    - "{{ python_3_version }}"
+    - "{{ python_2_version }}"
+
+- name: Set pyenv global
+  command: "{{ pyenv_exec }} global {{ python_2_version }} {{ python_3_version }}"
+
+- name: Install python3 packages
+  shell: eval "$({{ pyenv_exec }} init -)" && pyenv shell {{ python_3_version }} && pip3 install --upgrade {{ item }}
+  with_items:
+    - pip
+    - pipenv
+    - pygments
+    - pylint
+    - wakatime
+
+- name: Install python2 packages
+  shell: eval "$({{ pyenv_exec }} init -)" && pyenv shell {{ python_2_version }} && pip2 install --upgrade {{ item }}
+  with_items:
+    - platformio

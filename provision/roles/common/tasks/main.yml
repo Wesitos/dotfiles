@@ -1,0 +1,30 @@
+---
+- name: Install updates
+  apt:
+    update_cache: true
+    upgrade: dist
+  become_user: root
+
+- name: Gather os specific variables
+  include_vars: "{{ ansible_distribution | lower}}.yml"
+
+- name: Install software from repositories
+  apt:
+    name: "{{packages}} + {{distro_packages}}"
+    state: latest
+  become_user: root
+
+- name: Get list of installed snaps
+  shell: snap list | tail -n +2 | awk '{ print $1}'
+  register: snap_installed
+  changed_when: false
+
+- name: Install software from snap
+  command: snap install {{item}}
+  become_user: root
+  when: item not in snap_installed.stdout_lines
+  with_items:
+    - vlc
+    - inkscape
+    - zulip
+    - obs-studio
