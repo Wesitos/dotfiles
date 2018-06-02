@@ -10,6 +10,7 @@
       apt:
         name: emacs25
         state: build-dep
+        cache_valid_time: 600
       become_user: root
       when:
 
@@ -39,3 +40,45 @@
         chdir: "{{ emacs_source_path }}"
         target: install
       become_user: root
+
+- name: Create Fira Mono font directory
+  file:
+    path: "{{ ansible_env.HOME }}/.fonts/FiraMono"
+    state: directory
+    mode: 0755
+
+- name: Check if fira Mono is installed
+  stat:
+    path: "{{ ansible_env.HOME }}/.fonts/FiraMono/FiraMono-Regular.ttf"
+  register: fira_mono_stat_res
+
+- name: Install Fira Mono
+  when: fira_mono_stat_res.stat.exists == false
+  block:
+    - get_url:
+        url: https://fonts.google.com/download?family=Fira%20Mono
+        dest: /tmp/FiraMono.zip
+
+    - unarchive:
+        dest: "{{ ansible_env.HOME }}/.fonts/FiraMono"
+        src: /tmp/FiraMono.zip
+        remote_src: yes
+
+- name: Install Quivira font
+  get_url:
+    url: http://www.quivira-font.com/files/Quivira.otf
+    dest: "{{ ansible_env.HOME }}/.fonts/Quivira.otf"
+
+- name: Install Symbola and noto fonts
+  apt:
+    name:
+      - fonts-symbola
+      - fonts-noto
+    state: latest
+  become_user: root
+
+- name: Remove unifont package
+  apt:
+    name: unifont
+    state: absent
+  become_user: root

@@ -1,16 +1,47 @@
 ---
 - name: Install updates
   apt:
-    update_cache: true
+    cache_valid_time: 600
     upgrade: dist
   become_user: root
 
-- name: Gather os specific variables
+- root: Gather os specific variables
   include_vars: "{{ ansible_distribution | lower}}.yml"
+
+- set_fact:
+    security_pkgs:
+      - ca-certificates
+      - ufw
+    apt_pkgs:
+      - apt-transport-https
+      - software-properties-common
+      - synaptic
+      - gnupg2
+      - snapd
+    build_pkgs:
+      - build-essential
+      - libssl-dev
+    system_pkgs:
+      - lm-sensors
+    cli_pkgs:
+      - graphviz
+      - htop
+      - tree
+      - xinput
+      - net-tools
+      - unzip
+      - unrar
+      - bash-completion
+      - git
+      - wget
+      - curl
+    app_pkgs:
+      - wireshark
 
 - name: Install software from repositories
   apt:
-    name: "{{packages}} + {{distro_packages}}"
+    name: "{{security_pkgs}} + {{apt_pkgs}} + {{build_pkgs}} + {{system_pkgs}} + \
+    {{cli_pkgs}} + {{distro_packages}}"
     state: latest
   become_user: root
 
@@ -26,5 +57,5 @@
   with_items:
     - vlc
     - inkscape
-    - zulip
     - obs-studio
+    - spotify

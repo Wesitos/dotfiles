@@ -4,4 +4,5 @@
   apt:
     name: texlive-full
     state: latest
+    cache_valid_time: 600
   become_user: root

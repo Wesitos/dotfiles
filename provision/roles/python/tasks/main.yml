@@ -3,6 +3,7 @@
   apt:
     name: "{{ python_build_dependencies }}"
     state: latest
+    cache_valid_time: 600
   become_user: root
 
 - name: Install pyenv
@@ -26,16 +27,24 @@
 - name: Set pyenv global
   command: "{{ pyenv_exec }} global {{ python_2_version }} {{ python_3_version }}"
 
+- set_fact:
+    python_3_packages:
+      - pip
+      - pipenv
+      - pygments
+      - pylint
+      - wakatime
+    python_2_packages:
+      - platformio
+
 - name: Install python3 packages
-  shell: eval "$({{ pyenv_exec }} init -)" && pyenv shell {{ python_3_version }} && pip3 install --upgrade {{ item }}
-  with_items:
-    - pip
-    - pipenv
-    - pygments
-    - pylint
-    - wakatime
+  shell: |
+    eval "$({{ pyenv_exec }} init -)" \
+    && pyenv shell {{ python_3_version }} \
+    && pip3 install --upgrade {{ python_3_packages | join(' ') }}
 
 - name: Install python2 packages
-  shell: eval "$({{ pyenv_exec }} init -)" && pyenv shell {{ python_2_version }} && pip2 install --upgrade {{ item }}
-  with_items:
-    - platformio
+  shell: |
+    eval "$({{ pyenv_exec }} init -)" \
+    && pyenv shell {{ python_2_version }} \
+    && pip2 install --upgrade {{ python_2_packages | join(' ') }}
