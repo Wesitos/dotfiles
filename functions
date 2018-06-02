@@ -5,6 +5,14 @@ function path(){
     tr ':' '\n' <<< "$PATH" | sed -e 's|'$HOME'|'$orange'~'$reset'|'
 }
 
+function source_if_exists() {
+    for f in "$@"; do
+        if [ -f "$f" ]; then
+            . "$f"
+        fi
+    done
+}
+
 # Simple calculator
 calc() {
     local result=""

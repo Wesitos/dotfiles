@@ -1,9 +1,25 @@
 #!/bin/bash
 
+is_in_path() {
+    case ":$PATH:" in
+        *":$@:"* ) return 0;;
+        *) return 1;;
+    esac
+}
+
 add_path_exists() {
     for p in "$@"; do
-        if [ -d "$p" ]; then
-            export PATH="$p:$PATH"
+        if [ -d "$p" ] && ! is_in_path "$p"; then
+            PATH="$p:$PATH";
+        fi
+    done
+}
+
+# Adds a directory to the end of the path
+add_to_end_path_exists() {
+    for p in "$@"; do
+        if [ -d "$p" ] && ! is_in_path "$p"; then
+            PATH="$PATH:$p";
         fi
     done
 }
@@ -12,10 +28,13 @@ add_path_for_command() {
     if command -v "$1" > /dev/null 2>&1; then
         shift
         for p in "$@"; do
-            add_path_exists $(eval echo "$p")
+            add_path_exists $p
         done
     fi
 }
+
+# In debian, /sbin is not added to the path by default
+add_to_end_path_exists /sbin
 
 # Cabal
 add_path_for_command cabal "$HOME/.cabal/bin"
@@ -23,9 +42,6 @@ add_path_for_command cabal "$HOME/.cabal/bin"
 ## Android sdk
 add_path_exists "$ANDROID_HOME/platform-tools" \
                 "$ANDROID_HOME/tools/bin"
-
-# Add python user-site binary location
-add_path_for_command python '$(python -m site --user-base)/bin'
 
 # Pyenv
 add_path_exists "${PYENV_ROOT}/bin" "${PYENV_ROOT}/shims"
@@ -35,3 +51,4 @@ add_path_for_command yarn "$HOME/.yarn/bin"
 
 # set PATH so it includes user's private bin if it exists
 add_path_exists "$HOME/bin"
+

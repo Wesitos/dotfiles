@@ -28,15 +28,14 @@ if [ -z "$SHELL_PLATFORM" ]; then
     esac
 fi
 
-if [ -n $(type -P shell_is_login) ]; then
-  shell_is_linux       () { [[ "$OSTYPE" == *'linux'* ]] ; }
-  shell_is_osx         () { [[ "$OSTYPE" == *'darwin'* ]] ; }
-  shell_is_cygwin      () { [[ "$OSTYPE" == *'cygwin'* ]] ; }
-  shell_is_login       () { shopt -q login_shell ; }
-  shell_is_interactive () { test -n "$PS1" ; }
-  shell_is_script      () { ! shell_is_interactive ; }
-fi
-
+shell_is_login       () { shopt -q login_shell ; }
+shell_is_interactive () {
+  case "$-" in
+    *i*)  return 0 ;;
+      *)  return 1 ;;
+  esac
+}
+shell_is_script      () { ! shell_is_interactive ; }
 
 # Make $BASH_ENV the same in interactive and non-interactive scripts
 
