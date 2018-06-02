@@ -8,8 +8,17 @@
     - vars/common.yml
 
   roles:
-    - common
-    - python
-    - node
-    - emacs
-    - latex
+    - role: common
+      tags: common
+    - role: python
+      tags: python
+    - role: node
+      tags: node
+    - role: docker
+      tags: docker
+    - role: emacs
+      tags: emacs
+    - role: latex
+      tags: latex
+    - role: wine
+      tags: wine
