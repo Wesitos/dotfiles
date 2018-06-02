@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "${HOME}/dotfiles/color"
+source "${HOME}/dotfiles/dispatch/color"
 
 prompt_git() {
 	local s='';

@@ -7,7 +7,7 @@ shopt -s histappend
 shopt -s cdspell
 
 
-for file in ~/dotfiles/{default,functions,prompt,aliases,dockerfunc,extra}; do
+for file in ~/dotfiles/dispatch/{default,functions,prompt,aliases,dockerfunc,extra}; do
 	  if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		    # shellcheck source=/dev/null
 		    source "$file"
