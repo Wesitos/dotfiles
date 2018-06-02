@@ -10,7 +10,6 @@ function is_debian () {
     [ $(distro_id) == "debian" ]
 }
 
-
 ### Commmands
 
 if command -v ansible-playbook > /dev/null 2>&1; then
@@ -45,4 +44,4 @@ fi
 
 echo "Running playbook"
 
-sudo su -c "ansible-playbook setup.yml $@"
+exec sudo -u "root" -- "ansible-playbook" "setup.yml" "$@"
