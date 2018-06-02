@@ -1,0 +1,48 @@
+---
+
+- name: Ensure i386 architecture is selected
+  when: ansible_userspace_bits == "64"
+  block:
+    - name: Get foreign architectures list
+      command: dpkg --print-foreign-architectures
+      register: foreign_archs
+
+    - name: Add i386 architecture
+      command: dpkg --add-architecture i386
+      when: '"i386" not in foreign_archs.stdout'
+      become_user: root
+
+    - name: Update apt cache
+      apt:
+        update_cache: true
+      when: '"i386" not in foreign_archs.stdout'
+      become_user: root
+
+- name: Add wine-staging repo public key
+  apt_key:
+    id: 818A435C5FCBF54A # This culd change in the future
+    url: https://dl.winehq.org/wine-builds/Release.key
+    state: present
+  become_user: root
+
+- name: Add wine-staging repo
+  apt_repository:
+    repo: "deb https://dl.winehq.org/wine-builds/\
+    {{ ansible_distribution | lower}}/ {{ ansible_distribution_release }} \
+    main"
+    state: present
+    filename: winehq
+    update_cache: true
+  become_user: root
+
+- name: Install wine
+  apt:
+    name:
+      - winehq-staging
+      - winetricks
+    state: latest
+    cache_valid_time: 600
+  become_user: root
+
+
+  
