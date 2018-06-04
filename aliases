@@ -7,8 +7,10 @@ else # OS X `ls`
 	colorflag="-G"
 fi
 
-# Expand aliases always (instead of only in interactive shells)
-shopt -s expand_aliases
+if [ "$BASH_VERSION" ]; then
+    # Expand aliases always (instead of only in interactive shells)
+    shopt -s expand_aliases
+fi
 
 # List all files colorized in long format
 # shellcheck disable=SC2139

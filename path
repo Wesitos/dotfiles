@@ -1,34 +1,37 @@
 #!/bin/bash
 
-function add_path_exists() {
-    for p in "$@"
-    do
+add_path_exists() {
+    for p in "$@"; do
         if [ -d "$p" ]; then
             export PATH="$p:$PATH"
         fi
     done
 }
 
+add_path_for_command() {
+    if command -v "$1" > /dev/null 2>&1; then
+        shift
+        for p in "$@"; do
+            add_path_exists $(eval echo "$p")
+        done
+    fi
+}
+
 # Cabal
-add_path_exists "$HOME/.cabal/bin"
+add_path_for_command cabal "$HOME/.cabal/bin"
 
 ## Android sdk
 add_path_exists "$ANDROID_HOME/platform-tools" \
                 "$ANDROID_HOME/tools/bin"
 
 # Add python user-site binary location
-if command -v python >/dev/null 2>&1; then
-    add_path_exists $(python -m site --user-base)/bin
-fi
-
-# set PATH so it includes user's private bin if it exists
-add_path_exists "$HOME/bin"
+add_path_for_command python '$(python -m site --user-base)/bin'
 
 # Pyenv
 add_path_exists "${PYENV_ROOT}/bin" "${PYENV_ROOT}/shims"
 
 # Yarn
-add_path_exists "$HOME/.yarn/bin"
+add_path_for_command yarn "$HOME/.yarn/bin"
 
-### Yarn
-add_path_exists "$HOME/.yarn/bin"
+# set PATH so it includes user's private bin if it exists
+add_path_exists "$HOME/bin"
