@@ -51,13 +51,13 @@
 
 - name: Create Fira Mono font directory
   file:
-    path: "{{ ansible_env.HOME }}/.fonts/FiraMono"
+    path: "{{ ansible_user_dir }}/.fonts/FiraMono"
     state: directory
     mode: 0755
 
 - name: Check if fira Mono is installed
   stat:
-    path: "{{ ansible_env.HOME }}/.fonts/FiraMono/FiraMono-Regular.ttf"
+    path: "{{ ansible_user_dir }}/.fonts/FiraMono/FiraMono-Regular.ttf"
   register: fira_mono_stat_res
 
 - name: Install Fira Mono
@@ -68,14 +68,14 @@
         dest: /tmp/FiraMono.zip
 
     - unarchive:
-        dest: "{{ ansible_env.HOME }}/.fonts/FiraMono"
+        dest: "{{ ansible_user_dir }}/.fonts/FiraMono"
         src: /tmp/FiraMono.zip
         remote_src: yes
 
 - name: Install Quivira font
   get_url:
     url: http://www.quivira-font.com/files/Quivira.otf
-    dest: "{{ ansible_env.HOME }}/.fonts/Quivira.otf"
+    dest: "{{ ansible_user_dir }}/.fonts/Quivira.otf"
 
 - name: Install Symbola and noto fonts
   apt:

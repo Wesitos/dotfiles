@@ -3,7 +3,7 @@
 python_3_version: 3.6.5
 python_2_version: 2.7.15
 
-pyenv_root: "{{ ansible_env.HOME }}/.pyenv"
+pyenv_root: "{{ ansible_user_dir }}/.pyenv"
 pyenv_owner: "{{ ansible_env.USER }}"
 pyenv_exec: "{{ pyenv_root }}/bin/pyenv"
 

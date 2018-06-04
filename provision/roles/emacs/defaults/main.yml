@@ -2,4 +2,4 @@
 
 emacs_version: 25.3
 
-emacs_source_path: "{{ ansible_env.HOME }}/compiled/emacs-{{ emacs_version }}"
+emacs_source_path: "/tmp/emacs-{{ emacs_version }}"

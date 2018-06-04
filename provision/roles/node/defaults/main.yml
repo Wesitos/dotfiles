@@ -1,5 +1,5 @@
 ---
 
 node_version: lts/*
-nvm_root: "{{ ansible_env.HOME }}/.nvm"
+nvm_root: "{{ ansible_user_dir }}/.nvm"
 nvm_exec: "{{ nvm_root }}/nvm.sh"
