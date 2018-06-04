@@ -1,0 +1,40 @@
+---
+- name: Link bashrc_dispatch files
+  file:
+    path: "{{ ansible_user_dir }}/{{item}}"
+    src: "{{ ansible_user_dir }}/dotfiles/dispatch/bashrc_dispatch"
+    mode: 0600
+    state: link
+  loop:
+    - .profile
+    - .bashrc
+    - .bash_profile
+    - .bash_login
+
+- name: Copy desktop files
+  template:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir }}/.local/share/applications/{{ item | basename }}"
+  with_fileglob: "{{ ansible_user_dir }}/dotfiles/desktop-files/*.desktop"
+
+- name: Ensure user services directory is created
+  file:
+    path: "{{ ansible_user_dir }}/.config/systemd/user"
+    state: directory
+
+- name: Install service files
+  template:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir }}/.config/systemd/user/{{ item | basename }}"
+  with_fileglob: "{{ ansible_user_dir }}/dotfiles/services/*.service"
+
+- name: Ensure user services are enabled
+  systemd:
+    name: "{{ item | basename}}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    user: yes
+  with_fileglob: "{{ ansible_user_dir }}/.config/systemd/user/*.service"
+  environment: # systemd --user needs this env variable
+    XDG_RUNTIME_DIR: /run/user/{{ ansible_user_uid }}

@@ -16,6 +16,8 @@
       tags: node
     - role: docker
       tags: docker
+    - role: dotfiles
+      tags: dotfiles
     - role: emacs
       tags: emacs
     - role: latex

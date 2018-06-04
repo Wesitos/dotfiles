@@ -2,7 +2,6 @@
 Description=Emacs text editor
 Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 After=network.target systemd-logind.service
-Requires=systemd-logind
 
 [Service]
 Type=forking
