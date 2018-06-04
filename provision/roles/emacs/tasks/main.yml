@@ -41,6 +41,14 @@
         target: install
       become_user: root
 
+- name: Ensure spacemacs is cloned
+  git:
+    repo: https://github.com/syl20bnr/spacemacs.git
+    dest: "{{ ansible_user_dir }}/.emacs.d"
+    clone: yes
+    version: develop
+    update: no
+
 - name: Create Fira Mono font directory
   file:
     path: "{{ ansible_env.HOME }}/.fonts/FiraMono"
